@@ -1,0 +1,477 @@
+@ScrollTrackBackground: #111;
+@ScrollThumbBackground: #555;
+
+@TextColor: #ddd;
+@BodyBackground: #e9e9e9;
+
+@ThemeColor1: #66bbff;
+@ThemeColor2: #66bbff;
+@ThemeColor3: #66bbff;
+
+@ThemeColorLight: #3399ff;
+@ThemeColorDark: #2266bb;
+
+* {
+	font-family: "Source Sans Pro", sans-serif;
+	margin: 0;
+	padding: 0;
+	outline: none;
+	text-decoration: none;
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+	background: #111;
+}
+
+::-webkit-scrollbar-track {
+	border: 1px solid @ScrollTrackBackground;
+}
+
+::-webkit-scrollbar-thumb {
+	background: @ScrollThumbBackground;
+}
+
+::-webkit-input-placeholder {
+	color: rgba(255, 255, 255, 0.4);
+	transition: 250ms ease-in-out all;
+}
+
+:focus::-webkit-input-placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+html {
+	overflow-y: scroll;
+}
+
+html, body {
+	height: 100%;
+}
+
+p {
+	font-size: 1.3rem;
+	padding: 8px 2px;
+}
+
+a {
+
+	cursor: pointer;
+	font-size: 1.3rem;
+	transition: 0.2s ease all;
+	color: #444;
+
+	&:hover {
+		transition: none;
+		color: @ThemeColorLight;
+	}
+
+}
+
+h1, h2, h3 {
+	cursor: default;
+}
+
+h1 {
+	padding: 24px 32px;
+	color: #444;
+	background: #fafafa;
+	font-weight: 200;
+	font-size: 2rem;
+	border-bottom: 2px solid #eee;
+	box-shadow: 0 4px 6px #ccc;
+}
+
+h2 {
+	padding: 6px 0;
+	margin: 12px 0;
+	color: #777;
+	font-weight: bold;
+	font-size: 1.5rem;
+	border-bottom: 2px solid #ddd;
+}
+
+ul {
+	margin-left: 16px;
+	padding: 16px;
+	font-size: 1.3rem;
+}
+
+table {
+
+	border-collapse: collapse;
+	border: 1px solid #d7d7d7;
+	cursor: default;
+	
+	tr {
+
+		td, th {
+			padding: 12px 24px;
+			font-size: 1.2rem;
+		}
+
+		td {
+			background: #e7e7e7;
+			border-left: 1px solid #d7d7d7;
+			border-right: 1px solid #d7d7d7;
+		}
+
+		th {
+			background: #dfdfdf;
+			border: 1px solid #d7d7d7;
+			text-align: left;
+		}
+
+		&:nth-child(odd) {
+
+			td {
+				background: #efefef;
+			}
+
+		}
+
+	}
+
+}
+
+#wrapper {
+
+	min-height: 100%;
+	position: relative;
+	background: @BodyBackground;
+
+	> header {
+
+		border-bottom: 2px solid #ccc;
+		padding: 8px 16px;
+		background: @ThemeColorDark;
+
+		h1 {
+			margin-left: 8px;
+			font-size: 3rem;
+			color: #777;
+			display: inline-block;
+			cursor: default;
+			font-weight: 200;
+		}
+
+		img {
+			position: absolute;
+			top: 24px;
+			left: ~"calc(50% - 70px)";
+			user-select: none;
+		}
+
+	}
+
+	> footer {
+
+		border-top: 1px solid #fdfdfd;
+		border-bottom: 2px solid #ccc;
+		background: #eee;
+		padding: 16px 0;
+		text-align: center;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 24px;
+
+		p {
+			font-size: 1rem;
+			color: #555;
+			cursor: default;
+		}
+
+	}
+
+}
+
+main {
+	
+	background: @BodyBackground;
+	padding: 32px;
+	border-left: 1px solid #e2e2e2;
+	border-right: 1px solid #e2e2e2;
+
+	> div {
+		width: 80vw;
+		min-width: 1200px;
+		margin: 0 auto;
+	}
+
+}
+
+nav {
+
+	cursor: default;
+	padding: 8px 16px;
+
+	.site-title {
+		cursor: default;
+		display: inline-block;
+		font-size: 2rem;
+		margin-right: 16px;
+		color: @TextColor;
+		transform: skewx(-10deg);
+	}
+
+	a {
+
+		margin: 8px;
+		padding: 4px 16px;
+		font-size: 2rem;
+		border: none;
+		color: @TextColor;
+		background: transparent;
+		transition: 0.2s ease all;
+
+		&.secondary {
+			float: right;
+			margin: 0;
+			padding: 0 8px;
+		}
+
+		&:hover {
+
+			color: @ThemeColor2;
+			background: transparent;
+			box-shadow: 0 3px 2px -2px @ThemeColor2;
+			transition: none;
+
+			&.secondary {
+				box-shadow: none;
+			}
+
+		}
+
+	}
+
+}
+
+main > div > section {
+	background: #f4f4f4;
+	box-shadow: 0 4px 6px #ccc;
+	padding: 32px;
+	margin-bottom: 64px;
+}
+
+.login-form {
+
+	height: 400px;
+
+	table {
+
+		padding-top: 64px;
+		width: 100%;
+		border: none;
+
+		tr {
+
+			&:last-child {
+				td:last-child {
+					padding-top: 40px;
+				}
+			}
+
+			th {
+				border: none;
+			}
+
+			td {
+
+				padding: 8px;
+				background: none;
+				border: none;
+
+				&:nth-child(odd) {
+					background: none;
+				}
+
+				&:first-child {
+					text-align: right;
+				}
+
+				&:last-child {
+					max-width: 480px;
+				}
+
+				input {
+					padding: 8px;
+					font-size: 1.8rem;
+					width: 100%;
+					max-width: 512px;
+					border: 1px solid #ddd;
+				}
+
+				label {
+					padding: 8px;
+					display: inline-block;
+					font-size: 1.8rem;
+				}
+
+				a {
+
+					margin-left: 40px;
+					padding: 12px 24px;
+					font-size: 1.6rem;
+					color: #fff;
+					background: @ThemeColorLight;
+					box-shadow: 0 0 12px @ThemeColorLight;
+
+					&:hover {
+						transition: none;
+						background: transparent;
+						box-shadow: 0 0 12px #ccc;
+						color: #999;
+					}
+
+					&.secondary {
+
+						background: none;
+						box-shadow: none;
+						color: #bbb;
+						font-size: 1rem;
+
+						&:hover {
+							color: #777;
+							box-shadow: 0 0 1px #999;
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+.student-semester {
+	
+	tr {
+
+		&.course-failed {
+			td {
+				background: #eebbbb;
+				border: 1px solid #ddaaaa;
+			}
+		}
+
+		td {
+			&:nth-child(2) {
+				min-width: 320px;
+			}
+		}
+
+	}
+
+}
+
+.post, .assignment {
+	
+	position: relative;
+	background: rgba(0, 0, 0, 0.025);
+	margin: 16px 0;
+	padding: 0;
+
+	a {
+		font-size: 1rem;
+	}
+
+	header {
+		padding: 8px;
+	}
+
+	footer {
+		padding: 0 16px 16px 16px;
+		text-align: right;
+	}
+
+	h3 {
+		color: #777;
+		font-size: 1.6rem;
+		padding: 16px 16px 0 16px;
+	}
+
+	p {
+		font-size: 1.3rem;
+		padding: 0 16px 16px 16px;
+	}
+
+	.due {
+
+		color: #444;
+		position: absolute;
+		top: 3px;
+		right: 6px;
+		font-size: 1.5rem;
+
+		i {
+			font-size: 1.3rem;
+			color: #555;
+		}
+
+	}
+
+}
+
+.room-item {
+
+	display: block;
+	width: 42rem;
+
+	a {
+
+		padding: 20px 8px 16px 24px;
+		display: block;
+		color: #111;
+		font-size: 1.5rem;
+		border-left: 10px solid #eee;
+		//border-right: 1px solid transparent;
+		//border-top: 1px solid transparent;
+		//border-bottom: 1px solid transparent;
+
+		&:hover {
+			border-left: 10px solid @ThemeColorLight;
+			background: #fff;
+			//box-shadow: 0 0 2px #bbb;
+			color: @ThemeColorLight;
+			//border-right: 1px solid @ThemeColorLight;
+			//border-top: 1px solid @ThemeColorLight;
+			//border-bottom: 1px solid @ThemeColorLight;
+		}
+
+	}
+
+}
+
+.course, .room {
+
+	overflow: hidden;
+
+	aside {
+
+		float: right;
+		margin-right: 16px;
+
+		> div {
+			margin-bottom: 48px;
+		}
+
+	}
+
+	article {
+		max-width: 1024px;
+	}
+
+}
+
+.program-list {
+	b {
+		display: inline-block;
+		min-width: 4rem;
+	}
+}
