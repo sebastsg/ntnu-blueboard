@@ -1,0 +1,4 @@
+public/css/font-awesome.min.css linguist-vendored
+public/js/jquery-3.2.1.min.js linguist-vendored
+public/js/less.min.js linguist-vendored
+*.sql linguist-language=SQL
