@@ -33,6 +33,15 @@ function format_datetime($datetime) {
 	return substr($datetime, 0, -3);
 }
 
+function array_keys_exist($arr, $keys) {
+    foreach ($keys as $key) {
+        if (!array_key_exists($key, $arr)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function make_random_password() {
     // TODO: This should be made more secure. At the moment, there are no recurring characters.
     $password = str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');

@@ -99,15 +99,6 @@ router_bind_pages([
 ], [ ROUTE_REQUIRES_SESSION ]);
 
 
-function array_keys_exist($arr, $keys) {
-	foreach ($keys as $key) {
-		if (!array_key_exists($key, $arr)) {
-			return false;
-		}
-	}
-	return true;
-}
-
 router_bind('/post/resetpassword', function() {
 
 	$valid = array_keys_exist($_POST, [

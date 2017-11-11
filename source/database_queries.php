@@ -1,5 +1,11 @@
 <?php
 
+function get_teachers_for_course($course_code) {
+    return call_sql('get_teachers_for_course', [
+        $course_code
+    ]);
+}
+
 function get_course($course_code) {
     return call_sql('get_course', [
         $course_code
@@ -272,28 +278,6 @@ function is_person_in_room($username, $room_id) {
     return count($result) > 0;
 }
 
-function get_room_name($room_id) {
-	$result = execute_sql('SELECT room_name FROM room WHERE id = ?', [
-		$room_id
-	], true);
-	if (!$result) {
-		return 'Invalid room';
-	}
-	return $result['room_name'];
-}
-
-function get_programs_by_department($department_code) {
-	return execute_sql('SELECT program_code, program_name FROM program WHERE department_code = ?', [
-		$department_code
-	]);
-}
-
-function get_person($username) {
-	return execute_sql('SELECT first_name, last_name, email FROM person WHERE username = ?', [
-        $username
-	], true);
-}
-
 function get_due_assignments($username) {
     return call_sql('get_due_assignments', [
         $username
@@ -306,8 +290,41 @@ function get_recent_posts($username) {
     ]);
 }
 
+function find_course_room_id($semester_code, $course_code) {
+    $room_id = call_sql('find_course_room', [
+        $semester_code,
+        $course_code
+    ], true);
+    if (!$room_id) {
+        return 0;
+    }
+    return intval($room_id['room_id']);
+}
+
+function get_room_name($room_id) {
+	$result = call_sql('get_room_name', [
+		$room_id
+	], true);
+	if (!$result) {
+		return 'Invalid room';
+	}
+	return $result['room_name'];
+}
+
+function get_programs_by_department($department_code) {
+	return call_sql('get_programs_by_department', [
+	    $department_code
+    ]);
+}
+
+function get_person($username) {
+	return call_sql('get_person', [
+        $username
+	], true);
+}
+
 function get_person_password_hash($username) {
-	$result = execute_sql('SELECT password_hash FROM person WHERE username = ?', [
+	$result = call_sql('get_person_password_hash', [
 	    $username
     ], true);
 	if (!$result) {
@@ -318,43 +335,13 @@ function get_person_password_hash($username) {
 
 function set_person_password($username, $new_password) {
 	$password_hash = password_hash($new_password, PASSWORD_DEFAULT);
-	return execute_sql('UPDATE person SET password_hash = ? WHERE username = ?', [
-		$password_hash, $username
+	return call_sql('set_person_password_hash', [
+		$username,
+        $password_hash
 	]);
 }
 
-function find_course_room_id($semester_code, $course_code) {
-    $room_id = execute_sql('
-		SELECT id
-		  FROM room
-		 WHERE room_name LIKE ?
-		 LIMIT 1
-	', [
-        '%' . $course_code . '%'
-    ], true);
-    if (!$room_id) {
-        return 0;
-    }
-    return intval($room_id['id']);
-}
 /*
-function get_course_room_id($semester_id, $course_id) {
-    $room = execute_sql('
-		SELECT course_room.room_id AS id
-		  FROM course_in_semester
-		  JOIN course_room
-		    ON course_room.course_in_semester_id = course_in_semester.id
-		 WHERE course_in_semester.semester_id = ?
-		   AND course_in_semester.course_id = ?
-	', [
-        $semester_id, $course_id
-    ], true);
-    if (!$room) {
-        return 0;
-    }
-    return intval($room['id']);
-}
-
 function get_current_semester_id_for_course($course_id) {
 	$result = execute_sql('
 		SELECT semester.id AS id

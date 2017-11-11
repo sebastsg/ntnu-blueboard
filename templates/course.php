@@ -7,10 +7,7 @@ if (!$course) {
 	return;
 }
 
-$teachers = call_sql('get_teachers_for_course', [
-	$args['course_code']
-]);
-
+$teachers = get_teachers_for_course($args['course_code']);
 $programs = get_programs_with_course($args['course_code']);
 
 $course_name = $course['course_name'];

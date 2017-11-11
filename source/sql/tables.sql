@@ -173,7 +173,7 @@ CREATE TABLE room (
 CREATE TABLE course_room (
 
     room_id               INT UNSIGNED NOT NULL PRIMARY KEY,
-    course_in_semester_id INT UNSIGNED NOT NULL,
+    course_in_semester_id INT UNSIGNED NOT NULL UNIQUE,
 
     CONSTRAINT  fk_course_room_room_id
     FOREIGN KEY (room_id) REFERENCES room (id),

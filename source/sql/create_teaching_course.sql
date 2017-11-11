@@ -11,7 +11,7 @@ BEGIN
     INSERT INTO teaching_course (id, course_in_semester_id, employment_id)
          VALUES (0,
                  (SELECT course_in_semester.id
-                 	  FROM semester
+                    FROM semester
                    	JOIN course_in_semester
                    	  ON course_in_semester.semester_id = semester.id
                    	JOIN course
@@ -20,9 +20,9 @@ BEGIN
                    WHERE semester.semester_code = in_semester_code
                  ),
                  (SELECT employment.id
-                 	  FROM person
-                 	  JOIN employment
-                 	    ON employment.person_id = person.id
+                    FROM person
+                    JOIN employment
+                      ON employment.person_id = person.id
                    WHERE person.username = in_username
                  )
                 );
@@ -31,7 +31,7 @@ BEGIN
          VALUES (0,
                  2,
                  (SELECT id
-                 	  FROM person
+                    FROM person
                    WHERE username = in_username
                  ),
                  (SELECT course_room.room_id
