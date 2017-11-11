@@ -8,7 +8,6 @@ function install_database() {
 	echo '<tr><td>Creating database</td><td>';
 
 	$database_created = create_database();
-
 	if (!$database_created) {
 		echo 'Failed!</td></tr></table>';
 		return;
@@ -16,22 +15,23 @@ function install_database() {
 
 	echo 'Done.</td></tr>';
 
-	$files = get_files_in_directory('../source/sql');
+	$sql_files = get_files_in_directory('../source/sql');
 
-	foreach ($files as $file) {
-
-		echo "<tr><td>$file</td><td>";
-
-		$success = execute_sql_file('../source/sql/' . $file);
-
+	foreach ($sql_files as $sql_file) {
+		echo "<tr><td>$sql_file</td><td>";
+		$success = execute_sql_file('../source/sql/' . $sql_file);
 		echo ($success ? 'Done.' : 'Failed!') . '</td></tr>';
-
 	}
 
-	echo '</table>';
+    echo '</table><table>';
 
-	include('../seed/core.php');
-	include('../seed/organization.php');
-	include('../seed/people.php');
+	$seeds = get_files_in_directory('../seed');
+	foreach ($seeds as $seed) {
+	    echo "<tr><td>$seed</td><td>";
+	    include('../seed/' . $seed);
+	    echo 'Done.</td></tr>';
+    }
+
+    echo '</table>';
 
 }
