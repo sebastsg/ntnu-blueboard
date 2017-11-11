@@ -12,8 +12,8 @@ CREATE TABLE department (
 
     id              INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     faculty_id      INT UNSIGNED NOT NULL,
-    department_code	VARCHAR(32)  NOT NULL UNIQUE,
-    department_name	VARCHAR(128) NOT NULL,
+    department_code VARCHAR(32)  NOT NULL UNIQUE,
+    department_name VARCHAR(128) NOT NULL,
 
     CONSTRAINT  fk_department_faculty_id
     FOREIGN KEY (faculty_id) REFERENCES faculty (id)
@@ -103,8 +103,8 @@ CREATE TABLE course_in_program (
     CONSTRAINT  fk_course_in_program_course_id
     FOREIGN KEY (course_id)	REFERENCES course (id),
 
-    CONSTRAINT uq_course_in_program
-    UNIQUE KEY (program_id, course_id)
+    CONSTRAINT  uq_course_in_program
+    UNIQUE KEY  (program_id, course_id)
 
 );
 
@@ -132,7 +132,10 @@ CREATE TABLE course_in_semester (
     FOREIGN KEY (semester_id) REFERENCES semester (id),
 
     CONSTRAINT  fk_course_in_semester_course_id
-    FOREIGN KEY (course_id) REFERENCES course (id)
+    FOREIGN KEY (course_id) REFERENCES course (id),
+
+    CONSTRAINT  uq_course_in_semester
+    UNIQUE KEY  (semester_id, course_id)
 
 );
 
@@ -189,17 +192,17 @@ CREATE TABLE participant (
     created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_participant_role_id
+    CONSTRAINT  fk_participant_role_id
     FOREIGN KEY (role_id) REFERENCES role (id),
 
-    CONSTRAINT fk_participant_person_id
+    CONSTRAINT  fk_participant_person_id
     FOREIGN KEY (person_id) REFERENCES person (id),
 
-    CONSTRAINT fk_participant_room_id
+    CONSTRAINT  fk_participant_room_id
     FOREIGN KEY (room_id) REFERENCES room (id),
 
-    CONSTRAINT uq_participant
-    UNIQUE KEY (role_id, person_id, room_id)
+    CONSTRAINT  uq_participant
+    UNIQUE KEY  (role_id, person_id, room_id)
 
 );
 
@@ -224,7 +227,10 @@ CREATE TABLE participant_group_member (
     FOREIGN KEY (participant_group_id) REFERENCES participant_group (id),
 
     CONSTRAINT  fk_participant_group_member_participant_id
-    FOREIGN KEY (participant_id) REFERENCES participant (id)
+    FOREIGN KEY (participant_id) REFERENCES participant (id),
+
+    CONSTRAINT  uq_participant_group_member
+    UNIQUE KEY  (participant_group_id, participant_id)
 
 );
 
@@ -268,6 +274,127 @@ CREATE TABLE assignment (
 
 );
 
+CREATE TABLE assignment_submission (
+
+    id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    participant_id INT UNSIGNED NOT NULL,
+    assignment_id  INT UNSIGNED NOT NULL,
+    message        TEXT         NOT NULL,
+    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT  fk_assignment_submission_participant_id
+    FOREIGN KEY (participant_id) REFERENCES participant (id),
+
+    CONSTRAINT  fk_assignment_submission_assignment_id
+    FOREIGN KEY (assignment_id) REFERENCES assignment (id)
+
+);
+
+CREATE TABLE assignment_group_submission (
+
+    id                       INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    assignment_submission_id INT UNSIGNED NOT NULL,
+    participant_group_id     INT UNSIGNED NOT NUll,
+
+    CONSTRAINT  fk_assignment_group_submission_assignment_submission_id
+    FOREIGN KEY (assignment_submission_id) REFERENCES assignment_submission (id),
+
+    CONSTRAINT  fk_assignment_group_submission_participant_group_id
+    FOREIGN KEY (participant_group_id) REFERENCES participant_group (id),
+
+    CONSTRAINT  uq_assignment_group
+    UNIQUE KEY  (assignment_submission_id, participant_group_id)
+
+);
+
+CREATE TABLE uploaded_file (
+
+    id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    participant_id INT UNSIGNED NOT NULL,
+    room_id        INT UNSIGNED NOT NULL,
+    file_name      VARCHAR(160) NOT NULL,
+    file_path      VARCHAR(160) NOT NULL UNIQUE,
+    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT  fk_uploaded_file_participant_id
+    FOREIGN KEY (participant_id) REFERENCES participant (id),
+
+    CONSTRAINT  fk_uploaded_file_room_id
+    FOREIGN KEY (room_id) REFERENCES room (id)
+
+);
+
+CREATE TABLE post_file (
+
+    id               INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    post_id          INT UNSIGNED NOT NULL,
+    uploaded_file_id INT UNSIGNED NOT NULL,
+
+    CONSTRAINT  fk_post_file_post_id
+    FOREIGN KEY (post_id) REFERENCES post (id),
+
+    CONSTRAINT  fk_post_file_uploaded_file_id
+    FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_file (id),
+
+    CONSTRAINT  uq_post_file
+    UNIQUE KEY  (post_id, uploaded_file_id)
+
+);
+
+CREATE TABLE assignment_file (
+
+    id               INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    assignment_id    INT UNSIGNED NOT NULL,
+    uploaded_file_id INT UNSIGNED NOT NULL,
+
+    CONSTRAINT  fk_assignment_file_assignment_id
+    FOREIGN KEY (assignment_id) REFERENCES assignment (id),
+
+    CONSTRAINT  fk_assignment_file_uploaded_file_id
+    FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_file (id),
+
+    CONSTRAINT  uq_assignment_file
+    UNIQUE KEY  (assignment_id, uploaded_file_id)
+
+);
+
+CREATE TABLE assignment_submission_file (
+
+    id                       INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    assignment_submission_id INT UNSIGNED NOT NULL,
+    uploaded_file_id         INT UNSIGNED NOT NULL,
+
+    CONSTRAINT  fk_assignment_submission_file_post_id
+    FOREIGN KEY (assignment_submission_id) REFERENCES assignment_submission (id),
+
+    CONSTRAINT  fk_assignment_submission_file_uploaded_file_id
+    FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_file (id),
+
+    CONSTRAINT  uq_assignment_submission_file
+    UNIQUE KEY  (assignment_submission_id, uploaded_file_id)
+
+);
+
+CREATE TABLE assignment_evaluation (
+
+    id                       INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    assignment_submission_id INT UNSIGNED NOT NULL,
+    participant_id           INT UNSIGNED NOT NULL,
+    score                    INT          NOT NULL,
+    message                  TEXT         NOT NULL,
+    created_at               DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at               DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT  fk_assignment_evaluation_assignment_submission_id
+    FOREIGN KEY (assignment_submission_id) REFERENCES assignment_submission (id),
+
+    CONSTRAINT  fk_assignment_evaluation_participant_id
+    FOREIGN KEY (participant_id) REFERENCES participant (id)
+
+);
+
 CREATE TABLE employment (
 
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -280,7 +407,10 @@ CREATE TABLE employment (
     FOREIGN KEY (department_id) REFERENCES department (id),
 
     CONSTRAINT  fk_employment_person_id
-    FOREIGN KEY (person_id) REFERENCES person (id)
+    FOREIGN KEY (person_id) REFERENCES person (id),
+
+    CONSTRAINT  uq_employment
+    UNIQUE KEY  (department_id, person_id)
 
 );
 
@@ -294,7 +424,10 @@ CREATE TABLE teaching_course (
     FOREIGN KEY (course_in_semester_id) REFERENCES course_in_semester (id),
 
     CONSTRAINT  fk_teaching_course_employment_id
-    FOREIGN KEY (employment_id) REFERENCES employment (id)
+    FOREIGN KEY (employment_id) REFERENCES employment (id),
+
+    CONSTRAINT  uq_teaching_course
+    UNIQUE KEY  (course_in_semester_id, employment_id)
 
 );
 
@@ -325,7 +458,10 @@ CREATE TABLE enrollment_semester (
     FOREIGN KEY (semester_id) REFERENCES semester (id),
 
     CONSTRAINT  fk_enrollment_semester_enrollment_id
-    FOREIGN KEY (enrollment_id) REFERENCES enrollment (id)
+    FOREIGN KEY (enrollment_id) REFERENCES enrollment (id),
+
+    CONSTRAINT  uq_enrollment_semester
+    UNIQUE KEY  (semester_id, enrollment_id)
 
 );
 
@@ -339,7 +475,10 @@ CREATE TABLE enrollment_course (
     FOREIGN KEY (course_in_program_id) REFERENCES course_in_program (id),
 
     CONSTRAINT  fk_enrollment_course_enrollment_semester_id
-    FOREIGN KEY (enrollment_semester_id) REFERENCES enrollment_semester (id)
+    FOREIGN KEY (enrollment_semester_id) REFERENCES enrollment_semester (id),
+
+    CONSTRAINT  uq_enrollment_course
+    UNIQUE KEY  (course_in_program_id, enrollment_semester_id)
 
 );
 

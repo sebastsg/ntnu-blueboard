@@ -25,7 +25,7 @@ $with_header = isset($assignment['room_id']);
 	<h3><?php echo $assignment['title']; ?></h3>
 	<p><?php echo $assignment['body']; ?></p>
 	<footer>
-		<i>by
+		<i>Assignment given by
 			<a href="<?php echo $given_by_link; ?>">
 				<?php echo $given_by_name; ?>
 			</a>

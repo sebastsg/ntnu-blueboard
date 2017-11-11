@@ -43,6 +43,29 @@ router_bind('/room/{room_id}', function($room_id) {
 }, [ ROUTE_REQUIRES_SESSION ]);
 
 
+router_bind('/ajax/participants/{room_id}', function($room_id) {
+    return template_execute('participants', [
+        'room_id' => $room_id
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+router_bind('/participants/{room_id}', function($room_id) {
+    return template_execute('index', [
+        'page' => template_execute('participants', [
+            'room_id' => $room_id
+        ])
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+router_bind('/ajax/evaluations', function() {
+    return template_execute('evaluations');
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+router_bind('/evaluations', function() {
+    return template_execute('index', [
+        'page' => template_execute('evaluations')
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
 
 
 router_bind('/ajax/person/{username}', function($username) {

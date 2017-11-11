@@ -20,7 +20,7 @@
 				<nav>
 					<a href="/">Dashboard</a>
 					<a href="/rooms">Rooms</a>
-					<a href="/assignments">Assignments</a>
+					<a href="/evaluations">Evaluations</a>
 					<a href="/groups">Groups</a>
 					<a href="/notifications" class="secondary"><i class="fa fa-bell-o"></i></a>
 					<a href="/profile" class="secondary" style="margin-right:16px;"><i class="fa fa-user-circle"></i></a>

@@ -5,7 +5,7 @@ function add_enrollment_semester($username, $semester_code, $course_codes) {
 	foreach ($course_codes as $course_code) {
         create_enrollment_course($username, $semester_code, $course_code);
         $room_id = find_course_room_id($semester_code, $course_code);
-		create_participant($username, 'student', $room_id);
+        create_participant($username, 'student', $room_id);
 	}
 }
 
@@ -92,6 +92,13 @@ create_assignment(
     false
 );
 
+echo 'Adding submissions...<br>';
+$submission_id = create_assignment_submission_and_files(1, 'sebastsg', 'I did my very best!', [
+    'Assignment 1 Answers' => 'submissions/1/Assignment 1 Answers.pdf'
+]);
+
+echo 'Adding evaluations...<br>';
+create_assignment_evaluation($submission_id, 'hawa', 100, 'Good work!');
 
 echo 'Adding grades...<br>';
 create_grade('sebastsg', 'hawa', '004DA-2017-S', 'ID101912', 'A');

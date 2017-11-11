@@ -24,6 +24,49 @@ function get_assignments_for_room($room_id) {
     ]);
 }
 
+function get_evaluations($username) {
+    return call_sql('get_evaluations', [
+        $username
+    ]);
+}
+
+function create_assignment_submission($assignment_id, $username, $message) {
+    $id = call_sql('create_assignment_submission', [
+        $assignment_id,
+        $username,
+        $message
+    ], true);
+    if (!$id) {
+        return 0;
+    }
+    return intval($id['id']);
+}
+
+function create_assignment_submission_file($assignment_submission_id, $username, $file_name, $file_path) {
+    call_sql('create_assignment_submission_file', [
+        $assignment_submission_id,
+        $username,
+        $file_name,
+        $file_path
+    ]);
+}
+
+function create_assignment_submission_and_files($assignment_id, $username, $message, $files) {
+    $submission_id = create_assignment_submission($assignment_id, $username, $message);
+    foreach ($files as $file_name => $file_path) {
+        create_assignment_submission_file($submission_id, $username, $file_name, $file_path);
+    }
+    return $submission_id;
+}
+
+function create_assignment_evaluation($assignment_submission_id, $username, $score, $message) {
+    call_sql('create_assignment_evaluation', [
+        $assignment_submission_id,
+        $username,
+        $score,
+        $message
+    ]);
+}
 
 function create_course_in_semester($semester_code, $course_code) {
     call_sql('create_course_in_semester', [

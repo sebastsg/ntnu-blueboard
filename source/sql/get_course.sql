@@ -1,5 +1,5 @@
 CREATE PROCEDURE get_course (
-	IN in_course_code VARCHAR(32)
+    IN in_course_code VARCHAR(32)
 )
 
 BEGIN
