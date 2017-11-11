@@ -9,24 +9,16 @@
 
 	<?php
 
-	$enrollment_courses = call_sql('get_enrollment_courses_for_person', [
-		$args['person_id']
-	]);
-
+	$enrollment_courses = get_enrollment_courses_for_person($args['username']);
 	$semester_credits = 0;
 
 	foreach ($enrollment_courses as $enrollment_course) {
 
-		$course = call_sql('get_course', [
-			$enrollment_course['course_code']
-		], true);
-
+		$course = get_course($enrollment_course['course_code']);
 		$grade = '';
-
 		if ($enrollment_course['grade']) {
 			$grade = $enrollment_course['grade'];
 		}
-
 		$course_failed = ($grade === 'F');
 
 		if ($course_failed) {

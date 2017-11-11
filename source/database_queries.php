@@ -1,5 +1,11 @@
 <?php
 
+function get_course($course_code) {
+    return call_sql('get_course', [
+        $course_code
+    ], true);
+}
+
 function get_course_room($room_id) {
     return call_sql('get_course_room', [
         $room_id
@@ -9,6 +15,12 @@ function get_course_room($room_id) {
 function get_participants_for_room($room_id, $role){
     return call_sql('get_participants_for_room', [
         $room_id, $role
+    ]);
+}
+
+function get_rooms_for_person($username) {
+    return call_sql('get_rooms_for_person', [
+        $username
     ]);
 }
 
@@ -26,6 +38,18 @@ function get_assignments_for_room($room_id) {
 
 function get_evaluations($username) {
     return call_sql('get_evaluations', [
+        $username
+    ]);
+}
+
+function get_programs_with_course($course_code) {
+    return call_sql('get_programs_with_course', [
+        $course_code
+    ]);
+}
+
+function get_teaching_courses_for_person($username) {
+    return call_sql('get_teaching_courses_for_person', [
         $username
     ]);
 }
@@ -221,6 +245,12 @@ function create_semester($program_code, $semester_code, $semester_name, $started
         $semester_name,
         $started_at,
         $ended_at
+    ]);
+}
+
+function get_enrollment_courses_for_person($username) {
+    return call_sql('get_enrollment_courses_for_person', [
+        $username
     ]);
 }
 

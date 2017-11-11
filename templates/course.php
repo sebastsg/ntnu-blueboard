@@ -1,8 +1,6 @@
 <?php
 
-$course = call_sql('get_course', [
-	$args['course_code']
-], true);
+$course = get_course($args['course_code']);
 
 if (!$course) {
 	echo '<h1>Course not found.</h1>';
@@ -13,19 +11,7 @@ $teachers = call_sql('get_teachers_for_course', [
 	$args['course_code']
 ]);
 
-$programs = execute_sql('
-	SELECT program.id           AS id,
-		   program.program_code AS program_code,
-		   program.program_name AS program_name
-	  FROM program
-	  JOIN course_in_program
-	    ON course_in_program.program_id = program.id
-	  JOIN course
-	    ON course.id = course_in_program.course_id
-	   AND course.course_code = ?
-', [
-	$args['course_code']
-]);
+$programs = get_programs_with_course($args['course_code']);
 
 $course_name = $course['course_name'];
 $course_code = $args['course_code'];

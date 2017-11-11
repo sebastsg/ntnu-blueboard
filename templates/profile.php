@@ -36,7 +36,7 @@ if (!$person) {
 	<?php
 
 	echo template_execute('item/person_semester', [
-		'person_id' => session_username()
+		'username' => session_username()
 	]);
 
 	?>
