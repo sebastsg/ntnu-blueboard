@@ -19,8 +19,14 @@ BEGIN
         ON person.id = employment.person_id
       JOIN semester
         ON semester.id = course_in_semester.semester_id
-       AND semester.started_at <= CURDATE()
-       AND semester.ended_at >= CURDATE()
+       AND semester.ended_at =
+           (SELECT MAX(other_semester.ended_at)
+              FROM semester AS other_semester
+              JOIN course_in_semester AS other_course_in_semester
+                ON other_course_in_semester.semester_id = other_semester.id
+             WHERE other_semester.program_id = semester.program_id
+               AND other_course_in_semester.course_id = course_in_semester.course_id
+           )
      WHERE course.course_code = in_course_code;
 
 END 
