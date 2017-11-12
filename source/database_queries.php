@@ -55,9 +55,10 @@ function get_programs_with_course($course_code) {
 }
 
 function get_teaching_courses_for_person($username) {
-    return call_sql('get_teaching_courses_for_person', [
+    $rows = call_sql('get_teaching_courses_for_person', [
         $username
     ]);
+    return group_sql_result($rows, 'semester_code');
 }
 
 function create_assignment_submission($assignment_id, $username, $message) {
@@ -150,7 +151,8 @@ function create_course_in_program($program_code, $course_code, $is_mandatory) {
     call_sql('create_course_in_program', [
         $program_code,
         $course_code,
-        $is_mandatory
+        // Booleans must be converted to integers, because PHP.
+        intval($is_mandatory)
     ]);
 }
 

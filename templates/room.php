@@ -19,6 +19,15 @@ echo '<h1>' . $room_name . '</h1>';
 
 	<aside>
 
+        <?php
+        if ($course_room) {
+            echo '
+            <div>
+                <h2>' . $course_room['semester_name'] . '</h2>
+            </div>';
+        }
+        ?>
+
 		<div>
 			<?php
 

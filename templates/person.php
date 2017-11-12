@@ -1,7 +1,7 @@
 <?php
 
 $person = get_person($args['username']);
-$teaching_courses = get_teaching_courses_for_person($args['username']);
+$teaching_semesters = get_teaching_courses_for_person($args['username']);
 
 $name = $person['first_name'] . ' ' . $person['last_name'];
 $email = $person['email'];
@@ -13,19 +13,30 @@ echo '<h1>' . $name . '</h1>';
 	
 	<div>
 		<img style="background:#ddd;width:128px;height:128px;">
-		<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+        <p>
+		    <b>Email: </b><a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+        </p>
 	</div>
 
-	<div>
-		<h2>Teaches</h2>
-		<?php
-		echo '<ul>';
-		foreach ($teaching_courses as $teaching_course) {
-			$course_title = '<b>' . $teaching_course['course_code'] . '</b> ' . $teaching_course['course_name'];
-			echo '<li><a href="/course/' . $teaching_course['course_code'] . '">' . $course_title . '</a></li>';
+    <?php
+    if ($teaching_semesters) {
+        echo '
+        <div>
+	        <h2>Teaches</h2>';
+		foreach ($teaching_semesters as $teaching_courses) {
+            $semester_name = $teaching_courses[0]['semester_name'];
+            echo "<h3>$semester_name</h3>";
+		    echo '<ul>';
+		    foreach ($teaching_courses as $teaching_course) {
+                $course_code = $teaching_course['course_code'];
+                $course_name = $teaching_course['course_name'];
+                $course_title = "<b>$course_code</b> $course_name";
+                echo "<li><a href=\"/course/$course_code\">$course_title</a></li>";
+            }
+            echo '</ul>';
 		}
-		echo '</ul>';
-		?>
-	</div>
+		echo '</div>';
+	}
+    ?>
 
 </section>

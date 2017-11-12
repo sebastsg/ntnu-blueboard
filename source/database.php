@@ -3,16 +3,12 @@
 $db = false;
 
 function connect_database() {
-
 	global $db;
-
 	if ($db === false) {
-
 		try {
-
 			// Set the data source name.
 			$dsn = 'mysql:host=' . DATABASE_HOST . ';dbname=' . DATABASE_NAME . ';charset=utf8';
-			
+
 			// Attempt to establish the connection.
 			$db = new PDO($dsn, DATABASE_USER, DATABASE_PASS);
 
@@ -23,25 +19,17 @@ function connect_database() {
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		} catch (PDOException $e) {
-
 			return false;
-
 		} catch (Exception $e) {
-
 			return false;
-
 		}
-
 	}
-
 	return $db;
-
 }
 
 function create_database() {
 	// Note: Intentionally not setting the global db.
 	try {
-
 		// Set the data source name.
 		$dsn = 'mysql:host=' . DATABASE_HOST . ';charset=utf8';
 		
@@ -87,20 +75,15 @@ function execute_sql($query, $parameters = [], $single_row = false) {
 	}
 
 	try {
-
 		$statement = $db->prepare($query);
 		$statement->execute($parameters);
-
 		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 		if (!$result) {
 			return [];
 		}
-
 		if ($single_row) {
 			return $result[0];
 		}
-
 		return $result;
 
 	} catch (PDOException $e) {
@@ -114,12 +97,12 @@ function execute_sql($query, $parameters = [], $single_row = false) {
 	}
 }
 
-function get_last_row_id($table) {
-	$id = execute_sql("SELECT MAX(id) FROM $table", [], true);
-	if (!$id) {
-		return 0;
-	}
-	return intval($id['MAX(id)']);
+function group_sql_result($rows, $group_by) {
+    $result = [];
+    foreach ($rows as $row) {
+        $result[$row[$group_by]][] = $row;
+    }
+    return $result;
 }
 
 function make_question_marks($count) {
@@ -178,24 +161,18 @@ function execute_sql_file($path) {
 		return false;
 
 	} catch (Exception $e) {
-
 		return false;
-
 	}
 }
 
 function get_row_id_on_equals($table, $column, $value) {
-	
 	$result = execute_sql("SELECT id FROM $table WHERE $column = ?", [
 		$value
 	], true);
-
 	if (!$result) {
 		return 0;
 	}
-
 	return intval($result['id']);
-
 }
 
 // id = 0 	Auto increment used if enabled. 0 if not.
