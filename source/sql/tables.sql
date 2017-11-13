@@ -71,6 +71,7 @@ CREATE TABLE course_requirement (
     CONSTRAINT  fk_course_requirement_requires_course_id
     FOREIGN KEY (requires_course_id) REFERENCES course (id),
 
+    CONSTRAINT  pk_course_requirement
     PRIMARY KEY (course_id, requires_course_id)
 
 );
@@ -86,6 +87,7 @@ CREATE TABLE invalid_course_combo (
     CONSTRAINT  fk_invalid_course_combo_course_id_2
     FOREIGN KEY (course_id_2) REFERENCES course (id),
 
+    CONSTRAINT  pk_invalid_course_combo
     PRIMARY KEY (course_id_1, course_id_2)
 
 );
@@ -411,6 +413,22 @@ CREATE TABLE employment (
 
     CONSTRAINT  uq_employment
     UNIQUE KEY  (department_id, person_id)
+
+);
+
+CREATE TABLE course_coordinator (
+
+    course_id     INT UNSIGNED NOT NULL,
+    employment_id INT UNSIGNED NOT NULL,
+
+    CONSTRAINT  fk_course_coordinator_course_id
+    FOREIGN KEY (course_id) REFERENCES course (id),
+
+    CONSTRAINT  fk_course_coordinator_employment_id
+    FOREIGN KEY (employment_id) REFERENCES employment (id),
+
+    CONSTRAINT  pk_course_coordinator
+    PRIMARY KEY (course_id, employment_id)
 
 );
 

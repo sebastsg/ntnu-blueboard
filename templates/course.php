@@ -9,6 +9,8 @@ if (!$course) {
 
 $teachers = get_teachers_for_course($args['course_code']);
 $programs = get_programs_with_course($args['course_code']);
+$coordinators = get_course_coordinators($args['course_code']);
+$requirements = get_course_requirements($args['course_code']);
 
 $course_name = $course['course_name'];
 $course_code = $args['course_code'];
@@ -27,13 +29,23 @@ echo "<h1>$title</h1>";
 			<p><?php echo $course['department_name']; ?></p>
 		</div>
 
+        <div>
+            <?php
+            print_right_plurality('h2', 'Course coordinator', count($coordinators));
+            foreach ($coordinators as $coordinator) {
+                $name = $coordinator['first_name'] . ' ' . $coordinator['last_name'];
+                $username = $coordinator['username'];
+                $email = $coordinator['email'];
+                echo "<h3><a href=\"/person/$username\">$name</a></h3><p><a href=\"mailto:$email\">$email</a></p>";
+            }
+            ?>
+        </div>
+
 		<div>
             <?php
-
             echo template_execute('item/teacher', [
                 'teachers' => $teachers
             ]);
-
             ?>
 		</div>
 
@@ -60,17 +72,24 @@ echo "<h1>$title</h1>";
 		</div>
 
 		<div>
-			<h2>Recommended previous knowledge</h2>
+			<h2>Required previous knowledge</h2>
 			<ul>
-				<li><a href="/course/"><b>ID101912</b> Object-oriented programming</a></li>
+                <?php
+                foreach ($requirements as $requirement) {
+                    $course_code = $requirement['course_code'];
+                    $course_name = $requirement['course_name'];
+                    echo "<li><a href=\"/course/$course_code\"><b>$course_code</b> $course_name</a></li>";
+                }
+                if (!$requirements) {
+                    echo '<li>None specified.</li>';
+                }
+                ?>
 			</ul>
 		</div>
 
 		<div>
 			<h2>Examination arrangement</h2>
-			<?php
-			echo '<p>' . $course['examination'] . '.</p>';
-			?>
+			<?php echo '<p>' . $course['examination'] . '.</p>'; ?>
 		</div>
 
 	</aside>

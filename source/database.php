@@ -116,7 +116,7 @@ function make_question_marks($count) {
 	return $questions;
 }
 
-function call_sql($procedure, $parameters, $single_row = false) {
+function call_sql($procedure, $parameters = [], $single_row = false) {
 	$questions = make_question_marks(count($parameters));
 	$result = execute_sql("CALL $procedure ($questions)", $parameters, $single_row);
 	if (!$result) {

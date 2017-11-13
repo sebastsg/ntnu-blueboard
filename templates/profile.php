@@ -28,6 +28,11 @@ if (!$person) {
 		</a>
 	</p>
 
+    <h2>Reports</h2>
+    <ul>
+        <li><a href="/report/organization">Organizational structure report</a></li>
+    </ul>
+
 </section>
 
 <h1>Semesters</h1>

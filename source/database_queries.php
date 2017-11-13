@@ -1,5 +1,20 @@
 <?php
 
+function get_report_organization() {
+    $rows = call_sql('get_report_organization');
+    $faculties = group_sql_result($rows, 'faculty_code');
+    foreach ($faculties as &$faculty) {
+        $faculty = group_sql_result($faculty, 'department_code');
+        foreach ($faculty as &$department) {
+            $department = group_sql_result($department, 'program_code');
+            foreach ($department as &$program) {
+                $program = group_sql_result($program, 'course_code');
+            }
+        }
+    }
+    return $faculties;
+}
+
 function get_teachers_for_course($course_code) {
     return call_sql('get_teachers_for_course', [
         $course_code
@@ -59,6 +74,32 @@ function get_teaching_courses_for_person($username) {
         $username
     ]);
     return group_sql_result($rows, 'semester_code');
+}
+
+function create_course_coordinator($course_code, $username) {
+    call_sql('create_course_coordinator', [
+        $course_code,
+        $username
+    ]);
+}
+
+function get_course_coordinators($course_code) {
+    return call_sql('get_course_coordinators', [
+        $course_code
+    ]);
+}
+
+function create_course_requirement($course_code, $requires_course_code) {
+    call_sql('create_course_requirement', [
+        $course_code,
+        $requires_course_code
+    ]);
+}
+
+function get_course_requirements($course_code) {
+    return call_sql('get_course_requirements', [
+        $course_code
+    ]);
 }
 
 function create_assignment_submission($assignment_id, $username, $message) {

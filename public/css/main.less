@@ -114,6 +114,17 @@ table {
 			background: #e7e7e7;
 			border-left: 1px solid #d7d7d7;
 			border-right: 1px solid #d7d7d7;
+
+			&.table-container {
+				padding: 0;
+				table {
+					width: 100%;
+					td {
+						border: 1px solid #d7d7d7;
+					}
+				}
+			}
+
 		}
 
 		th {
@@ -123,11 +134,9 @@ table {
 		}
 
 		&:nth-child(odd) {
-
 			td {
 				background: #efefef;
 			}
-
 		}
 
 	}
@@ -145,6 +154,7 @@ table {
 		border-bottom: 2px solid #ccc;
 		padding: 8px 16px;
 		background: @ThemeColorDark;
+		padding-left: 144px;
 
 		h1 {
 			margin-left: 8px;
@@ -158,8 +168,9 @@ table {
 		img {
 			position: absolute;
 			top: 24px;
-			left: ~"calc(50% - 70px)";
+			left: 18px;
 			user-select: none;
+			width: 128px;
 		}
 
 	}
@@ -195,7 +206,7 @@ main {
 
 	> div {
 		width: 80vw;
-		min-width: 1200px;
+		min-width: 480px;
 		margin: 0 auto;
 	}
 
@@ -205,15 +216,6 @@ nav {
 
 	cursor: default;
 	padding: 8px 16px;
-
-	.site-title {
-		cursor: default;
-		display: inline-block;
-		font-size: 2rem;
-		margin-right: 16px;
-		color: @TextColor;
-		transform: skewx(-10deg);
-	}
 
 	a {
 
@@ -430,18 +432,17 @@ main > div > section {
 		color: #111;
 		font-size: 1.5rem;
 		border-left: 10px solid #eee;
-		//border-right: 1px solid transparent;
-		//border-top: 1px solid transparent;
-		//border-bottom: 1px solid transparent;
+		border-right: 1px solid transparent;
+		border-top: 1px solid transparent;
+		border-bottom: 1px solid transparent;
 
 		&:hover {
-			border-left: 10px solid @ThemeColorLight;
 			background: #fff;
-			//box-shadow: 0 0 2px #bbb;
 			color: @ThemeColorLight;
-			//border-right: 1px solid @ThemeColorLight;
-			//border-top: 1px solid @ThemeColorLight;
-			//border-bottom: 1px solid @ThemeColorLight;
+			border-left: 10px solid @ThemeColorLight;
+			border-right: 1px solid @ThemeColorLight;
+			border-top: 1px solid @ThemeColorLight;
+			border-bottom: 1px solid @ThemeColorLight;
 		}
 
 	}
@@ -456,6 +457,7 @@ main > div > section {
 
 		float: right;
 		margin-right: 16px;
+		max-width: 390px;
 
 		> div {
 			margin-bottom: 48px;
@@ -464,7 +466,7 @@ main > div > section {
 	}
 
 	article {
-		max-width: 1024px;
+		max-width: ~"calc(100% - 440px)";
 	}
 
 }
@@ -473,5 +475,30 @@ main > div > section {
 	b {
 		display: inline-block;
 		min-width: 4rem;
+	}
+}
+
+@media only screen and (max-width: 1000px), only screen and (max-device-width: 1000px) {
+	main {
+		padding: 16px 0;
+		> div {
+			width: 95vw;
+		}
+	}
+	nav {
+		a {
+			font-size: 1.8rem;
+			padding: 4px;
+		}
+	}
+}
+
+@media only screen and (max-width: 950px), only screen and (max-device-width: 950px) {
+	nav a {
+		margin: 8px 4px;
+		box-shadow: none;
+		&:hover {
+			box-shadow: none;
+		}
 	}
 }

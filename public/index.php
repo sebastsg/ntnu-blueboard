@@ -83,6 +83,24 @@ router_bind('/person/{username}', function($username) {
 }, [ ROUTE_REQUIRES_SESSION ]);
 
 
+
+
+router_bind('/ajax/report/{type}', function($type) {
+    return template_execute('report', [
+        'type' => $type
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+router_bind('/report/{type}', function($type) {
+    return template_execute('index', [
+        'page' => template_execute('report', [
+            'type' => $type
+        ])
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+
+
 router_bind_pages([
 
 	'login',
