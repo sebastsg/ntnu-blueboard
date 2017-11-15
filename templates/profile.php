@@ -15,6 +15,7 @@ if (!$person) {
 	<?php
 	
 	$credits = get_credits_for_person(session_username());
+
 	echo '<p>You currently have ' . $credits . ' credits.</p>';
 
 	echo '<p>Email: <a href="mailto:' . $person['email'] . '">' . $person['email'] . '</a></p>';
@@ -40,7 +41,7 @@ if (!$person) {
 
 	<?php
 
-	echo template_execute('item/person_semester', [
+	echo template_execute('item/enrollment_semester', [
 		'username' => session_username()
 	]);
 

@@ -1,6 +1,12 @@
 <?php
 
 $person = get_person($args['username']);
+
+if (!$person) {
+    echo '<h1>Person not found</h1>';
+    return;
+}
+
 $teaching_semesters = get_teaching_courses_for_person($args['username']);
 
 $name = $person['first_name'] . ' ' . $person['last_name'];

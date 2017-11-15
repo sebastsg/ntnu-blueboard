@@ -20,8 +20,8 @@ BEGIN
       JOIN person
         ON person.id = employment.person_id
        AND person.username = in_username
-     GROUP BY semester.code DESC,
-              course.code   ASC;
+     ORDER BY semester.started_at DESC,
+              course.name         ASC;
 
 
 END 

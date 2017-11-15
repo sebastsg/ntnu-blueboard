@@ -12,7 +12,7 @@ BEGIN
 		   poster.first_name AS first_name,
 		   poster.last_name  AS last_name,
            room.id           AS room_id,
-		   room.room_name    AS room_name
+		   room.name         AS room_name
       FROM person AS requester
       JOIN participant AS requester_participant
         ON requester_participant.person_id = requester.id

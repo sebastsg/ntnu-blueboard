@@ -5,10 +5,12 @@ CREATE PROCEDURE create_course_in_semester (
 
 BEGIN
 
+    START TRANSACTION;
+
     INSERT INTO course_in_semester (id, semester_code, course_code)
          VALUES (0, in_semester_code, in_course_code);
 
-    INSERT INTO room (id, room_name)
+    INSERT INTO room (id, name)
          VALUES (0,
                  (SELECT CONCAT('<b>', CONCAT(code, CONCAT('</b> ', name)))
                     FROM course
@@ -28,5 +30,7 @@ BEGIN
                      AND course_in_semester.course_code = in_course_code
                  )
                );
+
+    COMMIT;
 
 END

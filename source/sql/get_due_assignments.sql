@@ -9,7 +9,7 @@ BEGIN
            assignment.started_at      AS started_at,
            assignment.ended_at        AS ended_at,
            room.id                    AS room_id,
-           room.room_name             AS room_name,
+           room.name                  AS room_name,
            given_by_person.username   AS username,
            given_by_person.first_name AS first_name,
            given_by_person.last_name  AS last_name

@@ -12,7 +12,7 @@ BEGIN
            assignment.started_at            AS started_at,
            assignment.ended_at              AS ended_at,
            room.id                          AS room_id,
-           room.room_name                   AS room_name,
+           room.name                        AS room_name,
            assigner_person.username         AS assigner_username,
            assigner_person.first_name       AS assigner_first_name,
            assigner_person.last_name        AS assigner_last_name,

@@ -24,7 +24,7 @@ BEGIN
                     JOIN course_in_program
                       ON course_in_program.id = enrollment_course.course_in_program_id
                     JOIN course
-                      ON course.code  = course_in_program.course_code
+                      ON course.code = course_in_program.course_code
                      AND course.code = in_course_code
                    WHERE semester.code = in_semester_code
                  ),

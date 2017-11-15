@@ -158,7 +158,7 @@ CREATE TABLE person (
 CREATE TABLE room (
 
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    room_name  VARCHAR(128) NOT NULL,
+    name       VARCHAR(128) NOT NULL,
     created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
@@ -174,6 +174,16 @@ CREATE TABLE course_room (
 
     CONSTRAINT  fk_course_room_course_in_semester_id
     FOREIGN KEY (course_in_semester_id) REFERENCES course_in_semester (id)
+
+);
+
+CREATE TABLE info_room (
+
+    room_id INT UNSIGNED NOT NULL PRIMARY KEY,
+    code    VARCHAR(32)  NOT NULL UNIQUE,
+
+    CONSTRAINT  fk_info_room_room_id
+    FOREIGN KEY (room_id) REFERENCES room (id)
 
 );
 

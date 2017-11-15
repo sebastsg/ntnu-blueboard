@@ -22,6 +22,9 @@ function get_teachers_for_course($course_code) {
 }
 
 function get_course($course_code) {
+    if (strlen($course_code) > 16) {
+        return false;
+    }
     return call_sql('get_course', [
         $course_code
     ], true);
@@ -45,6 +48,29 @@ function get_rooms_for_person($username) {
     ]);
 }
 
+function create_info_room($code, $name) {
+    call_sql('create_info_room', [
+        $code,
+        $name
+    ]);
+}
+
+function find_info_room_id($code) {
+    $room_id = call_sql('find_info_room', [
+        $code
+    ], true);
+    if (!$room_id) {
+        return 0;
+    }
+    return intval($room_id['room_id']);
+}
+
+function get_info_room($room_id) {
+    return call_sql('get_info_room', [
+        $room_id
+    ], true);
+}
+
 function get_recent_posts_for_room($room_id) {
     return call_sql('get_recent_posts_for_room', [
         $room_id
@@ -61,6 +87,18 @@ function get_evaluations($username) {
     return call_sql('get_evaluations', [
         $username
     ]);
+}
+
+function get_courses_in_program($program_code) {
+    return call_sql('get_courses_in_program', [
+        $program_code
+    ]);
+}
+
+function get_program($program_code) {
+    return call_sql('get_program', [
+        $program_code
+    ], true);
 }
 
 function get_programs_with_course($course_code) {
@@ -375,6 +413,9 @@ function get_programs_by_department($department_code) {
 }
 
 function get_person($username) {
+    if (strlen($username) > 32) {
+        return false;
+    }
 	return call_sql('get_person', [
         $username
 	], true);
@@ -397,24 +438,3 @@ function set_person_password($username, $new_password) {
         $password_hash
 	]);
 }
-
-/*
-function get_current_semester_id_for_course($course_id) {
-	$result = execute_sql('
-		SELECT semester.id AS id
-		  FROM semester
-		  JOIN course_in_program
-		    ON course_in_program.program_id = semester.program_id
-		   AND course_in_program.course_id = ?
-		 WHERE semester.start_date <= CURDATE()
-		   AND semester.end_date >= CURDATE()
-      ORDER BY semester.start_date DESC
-		 LIMIT 1
-	', [
-		$course_id
-	], true);
-	if (!$result) {
-		return 0;
-	}
-	return intval($result['id']);
-}*/

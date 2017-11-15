@@ -4,7 +4,7 @@ CREATE PROCEDURE get_room_name (
 
 BEGIN
 
-    SELECT room_name
+    SELECT name AS room_name
       FROM room
      WHERE id = in_room_id;
 

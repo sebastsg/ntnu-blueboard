@@ -14,17 +14,32 @@ router_bind('/ajax', function() {
 
 
 router_bind('/course/{course_code}', function($course_code) {
-	return template_execute('index', [
-		'page' => template_execute('course', [
-			'course_code' => $course_code
-		])
-	]);
+    return template_execute('index', [
+        'page' => template_execute('course', [
+            'course_code' => $course_code
+        ])
+    ]);
 }, [ ROUTE_REQUIRES_SESSION ]);
 
 router_bind('/ajax/course/{course_code}', function($course_code) {
-	return template_execute('course', [
-		'course_code' => $course_code
-	]);
+    return template_execute('course', [
+        'course_code' => $course_code
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+
+router_bind('/program/{program_code}', function($program_code) {
+    return template_execute('index', [
+        'page' => template_execute('program', [
+            'program_code' => $program_code
+        ])
+    ]);
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+router_bind('/ajax/program/{program_code}', function($program_code) {
+    return template_execute('program', [
+        'program_code' => $program_code
+    ]);
 }, [ ROUTE_REQUIRES_SESSION ]);
 
 

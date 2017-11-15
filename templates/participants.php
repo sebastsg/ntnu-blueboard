@@ -16,13 +16,13 @@ $teachers = get_participants_for_room($room_id, 'teacher');
 
     <aside>
         <div>
-            <div>
-                <?php
-                echo template_execute('item/teacher', [
-                    'teachers' => $teachers
-                ]);
-                ?>
-            </div>
+            <?php
+            echo '<div>';
+            echo template_execute('item/teacher', [
+                'teachers' => $teachers
+            ]);
+            echo '</div>';
+            ?>
             <div>
                 <h2>Links</h2>
                 <a href="/room/<?php echo $room_id; ?>">Go back to room</a>
