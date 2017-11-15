@@ -1,152 +1,144 @@
 SET default_storage_engine = InnoDB;
 
 CREATE TABLE faculty (
-	
-    id           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    faculty_code VARCHAR(32)  NOT NULL UNIQUE,
-    faculty_name VARCHAR(128) NOT NULL
+
+    code VARCHAR(16)  NOT NULL PRIMARY KEY,
+    name VARCHAR(128) NOT NULL
 
 );
 
 CREATE TABLE department (
 
-    id              INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    faculty_id      INT UNSIGNED NOT NULL,
-    department_code VARCHAR(32)  NOT NULL UNIQUE,
-    department_name VARCHAR(128) NOT NULL,
+    code         VARCHAR(16)  NOT NULL PRIMARY KEY,
+    faculty_code VARCHAR(16)  NOT NULL,
+    name         VARCHAR(128) NOT NULL,
 
-    CONSTRAINT  fk_department_faculty_id
-    FOREIGN KEY (faculty_id) REFERENCES faculty (id)
+    CONSTRAINT  fk_department_faculty_code
+    FOREIGN KEY (faculty_code) REFERENCES faculty (code)
 
 );
 
 CREATE TABLE program (
 
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    department_id INT UNSIGNED NOT NULL,
-    program_code  VARCHAR(32)  NOT NULL UNIQUE,
-    program_name  VARCHAR(128) NOT NULL,
+    code             VARCHAR(16)  NOT NULL PRIMARY KEY,
+    department_code  VARCHAR(16)  NOT NULL,
+    name             VARCHAR(128) NOT NULL,
+    required_credits INT UNSIGNED NOT NULL,
 
-    CONSTRAINT  fk_program_department_id
-    FOREIGN KEY (department_id) REFERENCES department (id)
+    CONSTRAINT  fk_program_department_code
+    FOREIGN KEY (department_code) REFERENCES department (code)
 
 );
 
 CREATE TABLE examination_type (
 
-    id        INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    type_code VARCHAR(32)  NOT NULL UNIQUE,
-    type_name VARCHAR(128) NOT NULL
+    code VARCHAR(16)  NOT NULL PRIMARY KEY,
+    name VARCHAR(128) NOT NULL
 
 );
 
 CREATE TABLE course (
 
-    id                  INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    department_id       INT UNSIGNED NOT NULL,
-    course_code         VARCHAR(32)  NOT NULL UNIQUE,
-    course_name         VARCHAR(128) NOT NULL,
-    description         TEXT         NOT NULL,
-    examination_type_id INT UNSIGNED NOT NULL,
-    credits             INT UNSIGNED NOT NULL,
-    created_at          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    code                  VARCHAR(16)  NOT NULL PRIMARY KEY,
+    department_code       VARCHAR(16)  NOT NULL,
+    name                  VARCHAR(128) NOT NULL,
+    description           TEXT         NOT NULL,
+    examination_type_code VARCHAR(16)  NOT NULL,
+    credits               INT UNSIGNED NOT NULL,
+    created_at            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT  fk_course_department_id
-    FOREIGN KEY (department_id) REFERENCES department (id),
+    CONSTRAINT  fk_course_department_code
+    FOREIGN KEY (department_code) REFERENCES department (code),
 
-    CONSTRAINT  fk_course_examination_type_id
-    FOREIGN KEY (examination_type_id) REFERENCES examination_type (id)
+    CONSTRAINT  fk_course_examination_type_code
+    FOREIGN KEY (examination_type_code) REFERENCES examination_type (code)
 
 );
 
 CREATE TABLE course_requirement (
 
-    course_id          INT UNSIGNED NOT NULL,
-    requires_course_id INT UNSIGNED NOT NULL,
+    course_code          VARCHAR(16) NOT NULL,
+    requires_course_code VARCHAR(16) NOT NULL,
 
-    CONSTRAINT  fk_course_requirement_course_id
-    FOREIGN KEY (course_id) REFERENCES course (id),
+    CONSTRAINT  fk_course_requirement_course_code
+    FOREIGN KEY (course_code) REFERENCES course (code),
 
-    CONSTRAINT  fk_course_requirement_requires_course_id
-    FOREIGN KEY (requires_course_id) REFERENCES course (id),
+    CONSTRAINT  fk_course_requirement_requires_course_code
+    FOREIGN KEY (requires_course_code) REFERENCES course (code),
 
     CONSTRAINT  pk_course_requirement
-    PRIMARY KEY (course_id, requires_course_id)
+    PRIMARY KEY (course_code, requires_course_code)
 
 );
 
 CREATE TABLE invalid_course_combo (
 
-    course_id_1 INT UNSIGNED NOT NULL,
-    course_id_2 INT UNSIGNED NOT NULL,
+    course_code_1 VARCHAR(16) NOT NULL,
+    course_code_2 VARCHAR(16) NOT NULL,
 
-    CONSTRAINT  fk_invalid_course_combo_course_id_1
-    FOREIGN KEY (course_id_1) REFERENCES course (id),
+    CONSTRAINT  fk_invalid_course_combo_course_code_1
+    FOREIGN KEY (course_code_1) REFERENCES course (code),
 
-    CONSTRAINT  fk_invalid_course_combo_course_id_2
-    FOREIGN KEY (course_id_2) REFERENCES course (id),
+    CONSTRAINT  fk_invalid_course_combo_course_code_2
+    FOREIGN KEY (course_code_2) REFERENCES course (code),
 
     CONSTRAINT  pk_invalid_course_combo
-    PRIMARY KEY (course_id_1, course_id_2)
+    PRIMARY KEY (course_code_1, course_code_2)
 
 );
 
 CREATE TABLE course_in_program (
 
     id           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    program_id   INT UNSIGNED NOT NULL,
-    course_id    INT UNSIGNED NOT NULL,
+    program_code VARCHAR(16)  NOT NULL,
+    course_code  VARCHAR(16)  NOT NULL,
     is_mandatory BOOLEAN      NOT NULL,
 
-    CONSTRAINT  fk_course_in_program_program_id
-    FOREIGN KEY (program_id) REFERENCES program (id),
+    CONSTRAINT  fk_course_in_program_program_code
+    FOREIGN KEY (program_code) REFERENCES program (code),
 
-    CONSTRAINT  fk_course_in_program_course_id
-    FOREIGN KEY (course_id)	REFERENCES course (id),
+    CONSTRAINT  fk_course_in_program_course_code
+    FOREIGN KEY (course_code) REFERENCES course (code),
 
     CONSTRAINT  uq_course_in_program
-    UNIQUE KEY  (program_id, course_id)
+    UNIQUE KEY  (program_code, course_code)
 
 );
 
 CREATE TABLE semester (
 
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    program_id    INT UNSIGNED NOT NULL,
-    semester_code VARCHAR(128) NOT NULL UNIQUE,
-    semester_name VARCHAR(128) NOT NULL,
-    started_at    DATETIME     NOT NULL,
-    ended_at      DATETIME     NOT NULL,
+    code         VARCHAR(32)  NOT NULL PRIMARY KEY,
+    program_code VARCHAR(16)  NOT NULL,
+    name         VARCHAR(128) NOT NULL,
+    started_at   DATETIME     NOT NULL,
+    ended_at     DATETIME     NOT NULL,
 
-    CONSTRAINT fk_semester_program_id
-    FOREIGN KEY (program_id) REFERENCES program (id)
+    CONSTRAINT fk_semester_program_code
+    FOREIGN KEY (program_code) REFERENCES program (code)
 
 );
 
 CREATE TABLE course_in_semester (
 
-    id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    semester_id INT UNSIGNED NOT NULL,
-    course_id   INT UNSIGNED NOT NULL,
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    semester_code VARCHAR(32) NOT NULL,
+    course_code   VARCHAR(16) NOT NULL,
 
-    CONSTRAINT  fk_course_in_semester_semester_id
-    FOREIGN KEY (semester_id) REFERENCES semester (id),
+    CONSTRAINT  fk_course_in_semester_semester_code
+    FOREIGN KEY (semester_code) REFERENCES semester (code),
 
-    CONSTRAINT  fk_course_in_semester_course_id
-    FOREIGN KEY (course_id) REFERENCES course (id),
+    CONSTRAINT  fk_course_in_semester_course_code
+    FOREIGN KEY (course_code) REFERENCES course (code),
 
     CONSTRAINT  uq_course_in_semester
-    UNIQUE KEY  (semester_id, course_id)
+    UNIQUE KEY  (semester_code, course_code)
 
 );
 
 CREATE TABLE role (
 
-    id        INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    role_name VARCHAR(32)  NOT NULL UNIQUE,
-
-    INDEX (role_name)
+    name VARCHAR(16) NOT NULL PRIMARY KEY
 
 );
 
@@ -156,7 +148,7 @@ CREATE TABLE person (
     username      VARCHAR(32)  NOT NULL UNIQUE,
     first_name    VARCHAR(128) NOT NULL,
     last_name     VARCHAR(128) NOT NULL,
-    email         VARCHAR(128) NOT NULL,
+    email         VARCHAR(128) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -188,14 +180,14 @@ CREATE TABLE course_room (
 CREATE TABLE participant (
 
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    role_id    INT UNSIGNED NOT NULL,
+    role_name  VARCHAR(16)  NOT NULL,
     person_id  INT UNSIGNED NOT NULL,
     room_id    INT UNSIGNED NOT NULL,
     created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT  fk_participant_role_id
-    FOREIGN KEY (role_id) REFERENCES role (id),
+    CONSTRAINT  fk_participant_role_name
+    FOREIGN KEY (role_name) REFERENCES role (name),
 
     CONSTRAINT  fk_participant_person_id
     FOREIGN KEY (person_id) REFERENCES person (id),
@@ -204,7 +196,7 @@ CREATE TABLE participant (
     FOREIGN KEY (room_id) REFERENCES room (id),
 
     CONSTRAINT  uq_participant
-    UNIQUE KEY  (role_id, person_id, room_id)
+    UNIQUE KEY  (role_name, person_id, room_id)
 
 );
 
@@ -399,36 +391,36 @@ CREATE TABLE assignment_evaluation (
 
 CREATE TABLE employment (
 
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    department_id INT UNSIGNED NOT NULL,
-    person_id     INT UNSIGNED NOT NULL,
-    created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    id              INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    department_code VARCHAR(16)  NOT NULL,
+    person_id       INT UNSIGNED NOT NULL,
+    created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT  fk_employment_department_id
-    FOREIGN KEY (department_id) REFERENCES department (id),
+    CONSTRAINT  fk_employment_department_code
+    FOREIGN KEY (department_code) REFERENCES department (code),
 
     CONSTRAINT  fk_employment_person_id
     FOREIGN KEY (person_id) REFERENCES person (id),
 
     CONSTRAINT  uq_employment
-    UNIQUE KEY  (department_id, person_id)
+    UNIQUE KEY  (department_code, person_id)
 
 );
 
 CREATE TABLE course_coordinator (
 
-    course_id     INT UNSIGNED NOT NULL,
+    course_code   VARCHAR(16)  NOT NULL,
     employment_id INT UNSIGNED NOT NULL,
 
-    CONSTRAINT  fk_course_coordinator_course_id
-    FOREIGN KEY (course_id) REFERENCES course (id),
+    CONSTRAINT  fk_course_coordinator_course_code
+    FOREIGN KEY (course_code) REFERENCES course (code),
 
     CONSTRAINT  fk_course_coordinator_employment_id
     FOREIGN KEY (employment_id) REFERENCES employment (id),
 
     CONSTRAINT  pk_course_coordinator
-    PRIMARY KEY (course_id, employment_id)
+    PRIMARY KEY (course_code, employment_id)
 
 );
 
@@ -453,7 +445,7 @@ CREATE TABLE enrollment (
 
     id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     person_id      INT UNSIGNED NOT NULL,
-    program_id     INT UNSIGNED NOT NULL,
+    program_code   VARCHAR(16)  NOT NULL,
     student_number VARCHAR(32)  NOT NULL UNIQUE,
     created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -461,25 +453,25 @@ CREATE TABLE enrollment (
     CONSTRAINT  fk_enrollment_person_id
     FOREIGN KEY (person_id)	REFERENCES person (id),
 
-    CONSTRAINT  fk_enrollment_program_id
-    FOREIGN KEY (program_id) REFERENCES program (id)
+    CONSTRAINT  fk_enrollment_program_code
+    FOREIGN KEY (program_code) REFERENCES program (code)
 
 );
 
 CREATE TABLE enrollment_semester (
 
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    semester_id   INT UNSIGNED NOT NULL,
+    semester_code VARCHAR(32)  NOT NULL,
     enrollment_id INT UNSIGNED NOT NULL,
 
-    CONSTRAINT  fk_enrollment_semester_semester_id
-    FOREIGN KEY (semester_id) REFERENCES semester (id),
+    CONSTRAINT  fk_enrollment_semester_semester_code
+    FOREIGN KEY (semester_code) REFERENCES semester (code),
 
     CONSTRAINT  fk_enrollment_semester_enrollment_id
     FOREIGN KEY (enrollment_id) REFERENCES enrollment (id),
 
     CONSTRAINT  uq_enrollment_semester
-    UNIQUE KEY  (semester_id, enrollment_id)
+    UNIQUE KEY  (semester_code, enrollment_id)
 
 );
 

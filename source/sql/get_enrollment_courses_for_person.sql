@@ -5,7 +5,7 @@ CREATE PROCEDURE get_enrollment_courses_for_person (
 BEGIN
 
 	SELECT enrollment_course.id AS enrollment_course_id,
-	       course.course_code   AS course_code,
+	       course.code          AS course_code,
 	       grade.grade          AS grade
 	  FROM person
 	  JOIN enrollment
@@ -17,7 +17,7 @@ BEGIN
 	  JOIN course_in_program
 	    ON course_in_program.id = enrollment_course.course_in_program_id
 	  JOIN course
-	    ON course.id = course_in_program.course_id
+	    ON course.code = course_in_program.course_code
  LEFT JOIN grade
 	    ON grade.enrollment_course_id = enrollment_course.id
 	 WHERE person.username = in_username;

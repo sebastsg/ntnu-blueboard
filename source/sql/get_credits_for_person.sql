@@ -18,7 +18,7 @@ BEGIN
       JOIN course_in_program
         ON course_in_program.id = enrollment_course.course_in_program_id
       JOIN course
-        ON course.id = course_in_program.course_id
+        ON course.code = course_in_program.course_code
      WHERE person.username = in_username
        AND grade.created_at =
      	     (SELECT DISTINCT MAX(grade.created_at)

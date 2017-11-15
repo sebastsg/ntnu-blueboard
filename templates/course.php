@@ -11,6 +11,7 @@ $teachers = get_teachers_for_course($args['course_code']);
 $programs = get_programs_with_course($args['course_code']);
 $coordinators = get_course_coordinators($args['course_code']);
 $requirements = get_course_requirements($args['course_code']);
+$invalid_combos = get_invalid_course_combos($args['course_code']);
 
 $course_name = $course['course_name'];
 $course_code = $args['course_code'];
@@ -86,6 +87,22 @@ echo "<h1>$title</h1>";
                 ?>
 			</ul>
 		</div>
+
+        <div>
+            <h2>Cannot be studied simultaneously</h2>
+            <ul>
+                <?php
+                foreach ($invalid_combos as $invalid_combo) {
+                    $course_code = $invalid_combo['course_code'];
+                    $course_name = $invalid_combo['course_name'];
+                    echo "<li><a href=\"/course/$course_code\"><b>$course_code</b> $course_name</a></li>";
+                }
+                if (!$invalid_combos) {
+                    echo '<li>None specified.</li>';
+                }
+                ?>
+            </ul>
+        </div>
 
 		<div>
 			<h2>Examination arrangement</h2>

@@ -1,7 +1,7 @@
 CREATE PROCEDURE create_assignment_evaluation (
-    IN in_assignment_submission_id INT,
+    IN in_assignment_submission_id INT UNSIGNED,
     IN in_username                 VARCHAR(32),
-    IN in_score                    INT,
+    IN in_score                    INT UNSIGNED,
     IN in_message                  TEXT
 )
 

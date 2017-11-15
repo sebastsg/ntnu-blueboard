@@ -1,5 +1,5 @@
 CREATE PROCEDURE create_post (
-    IN in_room_id  INT,
+    IN in_room_id  INT UNSIGNED,
     IN in_username VARCHAR(32),
     IN in_title    VARCHAR(160),
     IN in_body     TEXT
@@ -7,13 +7,7 @@ CREATE PROCEDURE create_post (
 
 BEGIN
 
-    INSERT INTO post
-                (id,
-                 room_id,
-                 participant_id,
-                 title,
-                 body
-                )
+    INSERT INTO post (id, room_id, participant_id, title, body)
          VALUES (0,
                  in_room_id,
                  (SELECT participant.id

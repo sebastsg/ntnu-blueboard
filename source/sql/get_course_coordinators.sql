@@ -1,5 +1,5 @@
 CREATE PROCEDURE get_course_coordinators (
-    IN in_course_code VARCHAR(32)
+    IN in_course_code VARCHAR(16)
 )
 
 BEGIN
@@ -10,11 +10,11 @@ BEGIN
            person.email      AS email
       FROM course
       JOIN course_coordinator
-        ON course_coordinator.course_id = course.id
+        ON course_coordinator.course_code = course.code
       JOIN employment
         ON employment.id = course_coordinator.employment_id
       JOIN person
         ON person.id = employment.person_id
-     WHERE course.course_code = in_course_code;
+     WHERE course.code = in_course_code;
 
 END

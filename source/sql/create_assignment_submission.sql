@@ -1,5 +1,5 @@
 CREATE PROCEDURE create_assignment_submission (
-    IN in_assignment_id INT,
+    IN in_assignment_id INT UNSIGNED,
     IN in_username      VARCHAR(32),
     IN in_message       TEXT
 )

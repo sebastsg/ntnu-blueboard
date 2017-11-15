@@ -1,18 +1,15 @@
 CREATE PROCEDURE create_employment (
-    IN in_username        VARCHAR(64),
-    IN in_department_code VARCHAR(64)
+    IN in_username        VARCHAR(32),
+    IN in_department_code VARCHAR(16)
 )
 
 BEGIN
 
-    INSERT INTO employment (id, department_id, person_id)
+    INSERT INTO employment (id, department_code, person_id)
          VALUES (0,
+                 in_department_code,
                  (SELECT id
-                    FROM department
-                   WHERE department_code = in_department_code
-                 ),
-                 (SELECT id
-                 	  FROM person
+                    FROM person
                    WHERE username = in_username
                  )
                 );

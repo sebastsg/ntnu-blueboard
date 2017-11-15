@@ -102,6 +102,19 @@ function get_course_requirements($course_code) {
     ]);
 }
 
+function create_invalid_course_combo($course_code_1, $course_code_2) {
+    call_sql('create_invalid_course_combo', [
+        $course_code_1,
+        $course_code_2
+    ]);
+}
+
+function get_invalid_course_combos($course_code) {
+    return call_sql('get_invalid_course_combos', [
+        $course_code
+    ]);
+}
+
 function create_assignment_submission($assignment_id, $username, $message) {
     $id = call_sql('create_assignment_submission', [
         $assignment_id,
@@ -180,11 +193,12 @@ function create_course($department_code, $course_code, $course_name, $descriptio
     ]);
 }
 
-function create_program($department_code, $program_code, $program_name) {
+function create_program($department_code, $program_code, $program_name, $required_credits) {
     call_sql('create_program', [
         $department_code,
         $program_code,
-        $program_name
+        $program_name,
+        $required_credits
     ]);
 }
 

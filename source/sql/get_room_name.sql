@@ -1,5 +1,5 @@
 CREATE PROCEDURE get_room_name (
-    IN in_room_id INT
+    IN in_room_id INT UNSIGNED
 )
 
 BEGIN

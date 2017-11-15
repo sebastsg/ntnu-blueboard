@@ -9,12 +9,6 @@ CREATE PROCEDURE create_person (
 BEGIN
 
     INSERT INTO person (id, username, first_name, last_name, email, password_hash)
-         VALUES (0,
-                 in_username,
-                 in_first_name,
-                 in_last_name,
-                 in_email,
-                 in_password_hash
-                );
+         VALUES (0, in_username, in_first_name, in_last_name, in_email, in_password_hash);
 
 END

@@ -1,5 +1,5 @@
 CREATE PROCEDURE create_assignment_submission_file (
-    IN in_assignment_submission_id INT,
+    IN in_assignment_submission_id INT UNSIGNED,
     IN in_username                 VARCHAR(32),
     IN in_file_name                VARCHAR(160),
     IN in_file_path                VARCHAR(160)

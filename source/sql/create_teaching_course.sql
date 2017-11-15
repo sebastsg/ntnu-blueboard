@@ -1,7 +1,7 @@
 CREATE PROCEDURE create_teaching_course (
-    IN in_username      VARCHAR(64),
-    IN in_semester_code VARCHAR(64),
-    IN in_course_code   VARCHAR(64)
+    IN in_username      VARCHAR(32),
+    IN in_semester_code VARCHAR(32),
+    IN in_course_code   VARCHAR(16)
 )
 
 BEGIN
@@ -13,11 +13,11 @@ BEGIN
                  (SELECT course_in_semester.id
                     FROM semester
                    	JOIN course_in_semester
-                   	  ON course_in_semester.semester_id = semester.id
+                   	  ON course_in_semester.semester_code = semester.code
                    	JOIN course
-                   	  ON course.id = course_in_semester.course_id
-                   	 AND course.course_code = in_course_code
-                   WHERE semester.semester_code = in_semester_code
+                   	  ON course.code = course_in_semester.course_code
+                   	 AND course.code = in_course_code
+                   WHERE semester.code = in_semester_code
                  ),
                  (SELECT employment.id
                     FROM person
@@ -27,9 +27,9 @@ BEGIN
                  )
                 );
 
-    INSERT INTO participant (id, role_id, person_id, room_id)
+    INSERT INTO participant (id, role_name, person_id, room_id)
          VALUES (0,
-                 2,
+                 'teacher',
                  (SELECT id
                     FROM person
                    WHERE username = in_username

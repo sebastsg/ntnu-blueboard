@@ -1,5 +1,5 @@
 CREATE PROCEDURE create_assignment (
-    IN in_room_id          INT,
+    IN in_room_id          INT UNSIGNED,
     IN in_username         VARCHAR(32),
     IN in_title            VARCHAR(160),
     IN in_body             TEXT,

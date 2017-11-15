@@ -1,5 +1,5 @@
 CREATE PROCEDURE get_recent_posts_for_room (
-    IN in_room_id INT
+    IN in_room_id INT UNSIGNED
 )
 
 BEGIN

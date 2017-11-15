@@ -1,6 +1,6 @@
 CREATE PROCEDURE is_person_in_room (
     IN in_username VARCHAR(32),
-    IN in_room_id  INT
+    IN in_room_id  INT UNSIGNED
 )
 
 BEGIN

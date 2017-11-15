@@ -2,23 +2,28 @@ CREATE PROCEDURE get_report_organization ()
 
 BEGIN
 
-       SELECT faculty.faculty_code       AS faculty_code,
-              faculty.faculty_name       AS faculty_name,
-              department.department_code AS department_code,
-              department.department_name AS department_name,
-              program.program_code       AS program_code,
-              program.program_name       AS program_name,
-              course.course_code         AS course_code,
-              course.course_name         AS course_name
+       SELECT faculty.code                   AS faculty_code,
+              faculty.name                   AS faculty_name,
+              department.code                AS department_code,
+              department.name                AS department_name,
+              program.code                   AS program_code,
+              program.name                   AS program_name,
+              course.code                    AS course_code,
+              course.name                    AS course_name,
+              course_in_program.is_mandatory AS course_is_mandatory
          FROM faculty
     LEFT JOIN department
-           ON department.faculty_id = faculty.id
+           ON department.faculty_code = faculty.code
     LEFT JOIN program
-           ON program.department_id = department.id
+           ON program.department_code = department.code
     LEFT JOIN course_in_program
-           ON course_in_program.program_id = program.id
+           ON course_in_program.program_code = program.code
     LEFT JOIN course
-           ON course.id = course_in_program.course_id
-        GROUP BY faculty_code, department_code, program_code, course_code;
+           ON course.code = course_in_program.course_code
+        GROUP BY faculty.code,
+                 department.code,
+                 program.code,
+                 course.code,
+                 course_in_program.is_mandatory;
 
 END
