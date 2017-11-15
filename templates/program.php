@@ -12,10 +12,15 @@ $courses = get_courses_in_program($program_code);
 
 $program_name = $program['program_name'];
 
-echo "<h1>$program_name</h1>";
+echo "<h1>$program_name ($program_code)</h1>";
 
 ?>
 <section>
+
+    <div>
+        <h2>Information</h2>
+        <p>Study points required: <b><?php echo $program['required_credits']; ?></b></p>
+    </div>
 
     <div>
         <h2>Courses</h2>
@@ -40,7 +45,7 @@ echo "<h1>$program_name</h1>";
                 echo "<tr><td><a href=\"/course/$course_code\"><b>$course_code</b> $course_name</a></td>";
                 echo "<td>$credits</td>";
                 if ($course['is_mandatory']) {
-                    echo '<td>Yes</td>';
+                    echo '<td><b>Yes</b></td>';
                 } else {
                     echo '<td>No</td>';
                 }

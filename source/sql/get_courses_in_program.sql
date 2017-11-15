@@ -13,6 +13,7 @@ BEGIN
         ON course_in_program.program_code = program.code
       JOIN course
         ON course.code = course_in_program.course_code
-     WHERE program.code = in_program_code;
+     WHERE program.code = in_program_code
+     ORDER BY course_in_program.is_mandatory DESC;
 
 END 

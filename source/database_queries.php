@@ -89,6 +89,36 @@ function get_evaluations($username) {
     ]);
 }
 
+function create_group($username, $room_id, $role_name, $group_name) {
+    call_sql('create_group', [
+        $username,
+        $room_id,
+        $role_name,
+        $group_name
+    ]);
+}
+
+function create_group_member($username, $room_id, $role_name, $participant_group_id) {
+    call_sql('create_group_member', [
+        $username,
+        $room_id,
+        $role_name,
+        $participant_group_id
+    ]);
+}
+
+function get_group_members($participant_group_id) {
+    return  call_sql('get_group_members', [
+        $participant_group_id
+    ]);
+}
+
+function get_groups_for_person($username) {
+    return call_sql('get_groups_for_person', [
+        $username
+    ]);
+}
+
 function get_courses_in_program($program_code) {
     return call_sql('get_courses_in_program', [
         $program_code

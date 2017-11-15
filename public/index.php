@@ -72,15 +72,6 @@ router_bind('/participants/{room_id}', function($room_id) {
     ]);
 }, [ ROUTE_REQUIRES_SESSION ]);
 
-router_bind('/ajax/evaluations', function() {
-    return template_execute('evaluations');
-}, [ ROUTE_REQUIRES_SESSION ]);
-
-router_bind('/evaluations', function() {
-    return template_execute('index', [
-        'page' => template_execute('evaluations')
-    ]);
-}, [ ROUTE_REQUIRES_SESSION ]);
 
 
 router_bind('/ajax/person/{username}', function($username) {
@@ -96,8 +87,6 @@ router_bind('/person/{username}', function($username) {
 		])
 	]);
 }, [ ROUTE_REQUIRES_SESSION ]);
-
-
 
 
 router_bind('/ajax/report/{type}', function($type) {
@@ -126,6 +115,8 @@ router_bind_pages([
 router_bind_pages([
 
 	'rooms',
+    'evaluations',
+    'groups',
 	'profile',
 	'notifications',
 
