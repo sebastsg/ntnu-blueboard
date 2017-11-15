@@ -7,8 +7,6 @@ CREATE PROCEDURE create_group_member (
 
 BEGIN
 
-    START TRANSACTION;
-
     INSERT INTO participant_group_member (id, participant_group_id, participant_id)
          VALUES (0,
                  in_participant_group_id,
@@ -21,7 +19,5 @@ BEGIN
                    WHERE person.username = in_username
                  )
                 );
-
-    COMMIT;
 
 END
