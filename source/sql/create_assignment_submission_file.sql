@@ -7,7 +7,7 @@ CREATE PROCEDURE create_assignment_submission_file (
 
 BEGIN
 
-    START  TRANSACTION;
+    START TRANSACTION;
 
     INSERT INTO uploaded_file (id, participant_id, room_id, file_name, file_path)
          VALUES (0,

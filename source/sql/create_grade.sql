@@ -3,12 +3,12 @@ CREATE PROCEDURE create_grade (
     IN in_teacher_username VARCHAR(32),
     IN in_semester_code    VARCHAR(32),
     IN in_course_code      VARCHAR(16),
-    IN in_grade            CHAR
+    IN in_grade_type_name  VARCHAR(32)
 )
 
 BEGIN
 
-    INSERT INTO grade (id, enrollment_course_id, teaching_course_id, grade)
+    INSERT INTO grade (id, enrollment_course_id, teaching_course_id, grade_type_id)
          VALUES (0,
                  (SELECT enrollment_course.id
                     FROM semester
@@ -44,7 +44,14 @@ BEGIN
                      AND person.username = in_teacher_username
                    WHERE course.code = in_course_code
                  ),
-                 in_grade
+                 (SELECT grade_type.id
+                    FROM grade_type
+                    JOIN course_in_semester
+                      ON course_in_semester.grade_system_name = grade_type.grade_system_name
+                     AND course_in_semester.semester_code = in_semester_code
+                     AND course_in_semester.course_code = in_course_code
+                   WHERE grade_type.name = in_grade_type_name
+                 )
                 );
 
 END

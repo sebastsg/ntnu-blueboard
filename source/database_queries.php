@@ -250,14 +250,15 @@ function create_department($faculty_code, $department_code, $department_name) {
     ]);
 }
 
-function create_course($department_code, $course_code, $course_name, $description, $exam, $credits) {
+function create_course($department_code, $course_code, $course_name, $description, $exam, $credits, $grading_system) {
     call_sql('create_course', [
         $department_code,
         $course_code,
         $course_name,
         $description,
         $exam,
-        $credits
+        $credits,
+        $grading_system
     ]);
 }
 

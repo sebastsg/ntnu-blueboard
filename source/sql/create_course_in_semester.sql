@@ -7,8 +7,15 @@ BEGIN
 
     START TRANSACTION;
 
-    INSERT INTO course_in_semester (id, semester_code, course_code)
-         VALUES (0, in_semester_code, in_course_code);
+    INSERT INTO course_in_semester (id, semester_code, course_code, grade_system_name)
+         VALUES (0,
+                 in_semester_code,
+                 in_course_code,
+                 (SELECT course.grade_system_name
+                    FROM course
+                   WHERE course.code = in_course_code
+                 )
+                );
 
     INSERT INTO room (id, name)
          VALUES (0,

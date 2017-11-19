@@ -15,11 +15,8 @@ foreach ($enrollment_courses as $enrollment_course) {
     $course_name = $course['course_name'];
     $credits = $course['credits'];
     $semester_name = $enrollment_course['semester_name'];
-    $course_failed = ($grade === 'F');
-
-    if ($grade !== 'F' && $grade !== '') {
-        $semester_credits += intval($credits);
-    }
+    $course_failed = ($enrollment_course['is_passed'] === 0);
+    $course_passed = ($enrollment_course['is_passed'] === 1);
 
     if ($last_semester_name !== $semester_name) {
         if ($last_semester_name !== '') {
@@ -41,6 +38,10 @@ foreach ($enrollment_courses as $enrollment_course) {
             <th>Credits</th>
             <th>Grade</th>
         </tr>';
+    }
+
+    if ($course_passed) {
+        $semester_credits += intval($credits);
     }
 
 	if ($course_failed) {

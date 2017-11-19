@@ -14,7 +14,9 @@ BEGIN
         ON enrollment_course.enrollment_semester_id = enrollment_semester.id
       JOIN grade
         ON grade.enrollment_course_id = enrollment_course.id
-       AND grade.grade <> 'F'
+      JOIN grade_type
+        ON grade_type.id = grade.grade_type_id
+       AND grade_type.is_pass <> 0
       JOIN course_in_program
         ON course_in_program.id = enrollment_course.course_in_program_id
       JOIN course

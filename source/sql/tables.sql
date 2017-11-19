@@ -1,5 +1,27 @@
 SET default_storage_engine = InnoDB;
 
+CREATE TABLE grade_system (
+
+    name VARCHAR(32) NOT NULL PRIMARY KEY
+
+);
+
+CREATE TABLE grade_type (
+
+    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    grade_system_name VARCHAR(32)  NOT NULL,
+    name              VARCHAR(32)  NOT NULL,
+    description       VARCHAR(128) NOT NULL,
+    is_pass           BOOLEAN      NOT NULL,
+
+    CONSTRAINT  fk_grade_type_grade_system_name
+    FOREIGN KEY (grade_system_name) REFERENCES grade_system (name),
+
+    CONSTRAINT  uq_grade_type
+    UNIQUE KEY  (grade_system_name, name)
+
+);
+
 CREATE TABLE faculty (
 
     code VARCHAR(16)  NOT NULL PRIMARY KEY,
@@ -40,19 +62,23 @@ CREATE TABLE examination_type (
 CREATE TABLE course (
 
     code                  VARCHAR(16)  NOT NULL PRIMARY KEY,
+    grade_system_name     VARCHAR(32)  NOT NULL,
+    examination_type_code VARCHAR(16)  NOT NULL,
     department_code       VARCHAR(16)  NOT NULL,
     name                  VARCHAR(128) NOT NULL,
     description           TEXT         NOT NULL,
-    examination_type_code VARCHAR(16)  NOT NULL,
     credits               INT UNSIGNED NOT NULL,
     created_at            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT  fk_course_department_code
-    FOREIGN KEY (department_code) REFERENCES department (code),
+    CONSTRAINT  fk_course_grade_system_name
+    FOREIGN KEY (grade_system_name) REFERENCES grade_system (name),
 
     CONSTRAINT  fk_course_examination_type_code
-    FOREIGN KEY (examination_type_code) REFERENCES examination_type (code)
+    FOREIGN KEY (examination_type_code) REFERENCES examination_type (code),
+
+    CONSTRAINT  fk_course_department_code
+    FOREIGN KEY (department_code) REFERENCES department (code)
 
 );
 
@@ -121,15 +147,19 @@ CREATE TABLE semester (
 
 CREATE TABLE course_in_semester (
 
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    semester_code VARCHAR(32) NOT NULL,
-    course_code   VARCHAR(16) NOT NULL,
+    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    semester_code     VARCHAR(32) NOT NULL,
+    course_code       VARCHAR(16) NOT NULL,
+    grade_system_name VARCHAR(32) NOT NULL,
 
     CONSTRAINT  fk_course_in_semester_semester_code
     FOREIGN KEY (semester_code) REFERENCES semester (code),
 
     CONSTRAINT  fk_course_in_semester_course_code
     FOREIGN KEY (course_code) REFERENCES course (code),
+
+    CONSTRAINT  fk_course_in_semester_grade_system_name
+    FOREIGN KEY (grade_system_name) REFERENCES grade_system (name),
 
     CONSTRAINT  uq_course_in_semester
     UNIQUE KEY  (semester_code, course_code)
@@ -507,7 +537,7 @@ CREATE TABLE grade (
     id                   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     enrollment_course_id INT UNSIGNED NOT NULL,
     teaching_course_id   INT UNSIGNED NOT NULL,
-    grade                CHAR         NOT NULL,
+    grade_type_id        INT UNSIGNED NOT NULL,
     created_at           DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at           DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -515,6 +545,9 @@ CREATE TABLE grade (
     FOREIGN KEY (enrollment_course_id) REFERENCES enrollment_course (id),
 
     CONSTRAINT  fk_grade_teaching_course_id
-    FOREIGN KEY (teaching_course_id) REFERENCES teaching_course (id)
+    FOREIGN KEY (teaching_course_id) REFERENCES teaching_course (id),
+
+    CONSTRAINT  fk_grade_grade_type_id
+    FOREIGN KEY (grade_type_id) REFERENCES grade_type (id)
 
 );
