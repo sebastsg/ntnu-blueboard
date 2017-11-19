@@ -5,14 +5,14 @@ CREATE PROCEDURE get_recent_posts (
 BEGIN
 
     SELECT post.title        AS title,
-		   post.body         AS body,
+           post.body         AS body,
            post.created_at   AS created_at,
-		   post.updated_at   AS updated_at,
-		   poster.username   AS username,
-		   poster.first_name AS first_name,
-		   poster.last_name  AS last_name,
+           post.updated_at   AS updated_at,
+           poster.username   AS username,
+           poster.first_name AS first_name,
+           poster.last_name  AS last_name,
            room.id           AS room_id,
-		   room.name         AS room_name
+           room.name         AS room_name
       FROM person AS requester
       JOIN participant AS requester_participant
         ON requester_participant.person_id = requester.id
