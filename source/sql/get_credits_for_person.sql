@@ -4,7 +4,10 @@ CREATE PROCEDURE get_credits_for_person (
 
 BEGIN
 
-    SELECT SUM(course.credits) AS total_credits
+    SELECT SUM(course.credits)      AS credits,
+           program.code             AS program_code,
+           program.name             AS program_name,
+           program.required_credits AS required_credits
       FROM person
       JOIN enrollment
         ON enrollment.person_id = person.id
@@ -21,11 +24,14 @@ BEGIN
         ON course_in_program.id = enrollment_course.course_in_program_id
       JOIN course
         ON course.code = course_in_program.course_code
+      JOIN program
+        ON program.code = course_in_program.program_code
      WHERE person.username = in_username
        AND grade.created_at =
-     	     (SELECT DISTINCT MAX(grade.created_at)
-     	        FROM grade
-     	       WHERE grade.enrollment_course_id = enrollment_course.id
-     	     );
+           (SELECT DISTINCT MAX(grade.created_at)
+              FROM grade
+             WHERE grade.enrollment_course_id = enrollment_course.id
+           )
+     GROUP BY program.code;
 
 END 

@@ -164,7 +164,12 @@ router_bind('/post/login', function() {
 router_bind('/logout', function() {
 	session_logout();
 	header('Location: /');
-	return '';
+    return 'You are now logged out.';
+}, [ ROUTE_REQUIRES_SESSION ]);
+
+router_bind('/ajax/logout', function() {
+    session_logout();
+    return 'You are now logged out.';
 }, [ ROUTE_REQUIRES_SESSION ]);
 
 

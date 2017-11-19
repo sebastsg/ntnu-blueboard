@@ -387,13 +387,9 @@ function get_enrollment_courses_for_person($username) {
 }
 
 function get_credits_for_person($username) {
-    $result = call_sql('get_credits_for_person', [
+    return call_sql('get_credits_for_person', [
         $username
-    ], true);
-    if (!$result) {
-        return 0;
-    }
-    return intval($result['total_credits']);
+    ]);
 }
 
 function is_person_in_room($username, $room_id) {

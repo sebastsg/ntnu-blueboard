@@ -14,14 +14,18 @@ if (!$person) {
 
 	<?php
 	
-	$credits = get_credits_for_person(session_username());
-
-	echo '<p>You currently have ' . $credits . ' credits.</p>';
-
-	echo '<p>Email: <a href="mailto:' . $person['email'] . '">' . $person['email'] . '</a></p>';
+	$program_credits = get_credits_for_person(session_username());
+    foreach ($program_credits as $credits) {
+        $acquired = $credits['credits'];
+        $required = $credits['required_credits'];
+        $code = $credits['program_code'];
+        $name = "<b>$code</b> " . $credits['program_name'];
+        echo "<div class=\"credits\"><p><a href=\"$code\">$name</a></p><p>You currently have $acquired / $required credits.</p></div>";
+    }
 
 	?>
 
+    <h2>Controls</h2>
 	<p>
 		<a href="/logout">
 			<i class="fa fa-sign-out"></i>
